@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Power Sports — Materiais Esportivos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:   #0a0a0a;
+      --dark:    #111316;
+      --card-bg: #161b22;
+      --border:  #1f2937;
+      --orange:  #ff5c00;
+      --orange2: #ff8c00;
+      --white:   #f0f4f8;
+      --muted:   #8892a4;
+      --radius:  12px;
+      --transition: .25s cubic-bezier(.4,0,.2,1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Barlow', sans-serif;
+      font-weight: 400;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ───────────────────────── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5vw;
+      height: 68px;
+      background: rgba(10,10,10,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--orange);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .logo-text {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 1.5rem;
+      letter-spacing: .04em;
+      color: var(--white);
+    }
+
+    .logo-text span { color: var(--orange); }
+
+    nav { display: flex; gap: 28px; }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .875rem;
+      font-weight: 500;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      transition: color var(--transition);
+    }
+
+    nav a:hover { color: var(--white); }
+
+    .header-actions { display: flex; gap: 12px; align-items: center; }
+
+    .btn-cart {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: .95rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background var(--transition), transform var(--transition);
+    }
+
+    .btn-cart:hover { background: var(--orange2); transform: translateY(-1px); }
+
+    .cart-count {
+      background: var(--black);
+      color: var(--orange);
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .75rem;
+      font-weight: 800;
+    }
+
+    /* ── HERO ────────────────────────── */
+    .hero {
+      position: relative;
+      min-height: 88vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      padding: 0 5vw;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 70% 50%, rgba(255,92,0,.18) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 20% 80%, rgba(255,140,0,.1) 0%, transparent 60%),
+        linear-gradient(135deg, #0a0a0a 0%, #111316 100%);
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,92,0,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,92,0,.06) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 60% at 70% 50%, black 20%, transparent 80%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 620px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,92,0,.15);
+      border: 1px solid rgba(255,92,0,.35);
+      color: var(--orange);
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: .8rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      animation: fadeUp .6s ease both;
+    }
+
+    .hero h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(3.2rem, 7vw, 6rem);
+      line-height: .95;
+      letter-spacing: -.01em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      animation: fadeUp .6s .12s ease both;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--orange);
+      display: block;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 1.1rem;
+      line-height: 1.7;
+      max-width: 480px;
+      margin-bottom: 36px;
+      animation: fadeUp .6s .24s ease both;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      animation: fadeUp .6s .36s ease both;
+    }
+
+    .btn-primary {
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      padding: 15px 32px;
+      border-radius: 10px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all var(--transition);
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary:hover { background: var(--orange2); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,92,0,.35); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 1px solid var(--border);
+      padding: 15px 32px;
+      border-radius: 10px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all var(--transition);
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-outline:hover { border-color: var(--orange); color: var(--orange); }
+
+    .hero-stats {
+      position: absolute;
+      right: 5vw;
+      bottom: 10vh;
+      display: flex;
+      gap: 40px;
+      animation: fadeUp .6s .48s ease both;
+    }
+
+    .stat-item { text-align: center; }
+
+    .stat-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 2.4rem;
+      color: var(--orange);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: .78rem;
+      color: var(--muted);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* ── SECTIONS ────────────────────── */
+    section { padding: 80px 5vw; }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 48px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .section-label {
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      text-transform: uppercase;
+      line-height: 1.1;
+    }
+
+    .view-all {
+      color: var(--orange);
+      text-decoration: none;
+      font-size: .875rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      border-bottom: 1px solid transparent;
+      transition: border-color var(--transition);
+      white-space: nowrap;
+    }
+
+    .view-all:hover { border-color: var(--orange); }
+
+    /* ── CATEGORIES ──────────────────── */
+    #categorias { background: var(--dark); }
+
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+    }
+
+    .category-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 20px 22px;
+      text-align: center;
+      cursor: pointer;
+      transition: all var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .category-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,92,0,.08), transparent);
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .category-card:hover { border-color: var(--orange); transform: translateY(-4px); }
+    .category-card:hover::before { opacity: 1; }
+
+    .cat-icon {
+      font-size: 2.4rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .cat-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .cat-count {
+      font-size: .78rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ── PRODUCTS ────────────────────── */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .product-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: all var(--transition);
+      position: relative;
+      animation: fadeUp .5s ease both;
+    }
+
+    .product-card:hover { border-color: rgba(255,92,0,.4); transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,0,0,.4); }
+
+    .product-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 2;
+      background: var(--orange);
+      color: #fff;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: .75rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .product-img-wrap {
+      width: 100%;
+      height: 220px;
+      background: #1a1f2e;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .product-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .4s ease;
+    }
+
+    .product-card:hover .product-img-wrap img { transform: scale(1.06); }
+
+    .product-img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #161b22, #1a2030);
+    }
+
+    .product-img-placeholder span { font-size: 3.5rem; }
+    .product-img-placeholder p { font-size: .75rem; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
+
+    .product-body { padding: 18px 18px 20px; }
+
+    .product-category {
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 6px;
+    }
+
+    .product-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: .02em;
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+
+    .product-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .product-price {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 1.5rem;
+      color: var(--orange);
+    }
+
+    .product-price .currency { font-size: 1rem; vertical-align: super; margin-right: 2px; }
+
+    .btn-add {
+      background: rgba(255,92,0,.15);
+      color: var(--orange);
+      border: 1px solid rgba(255,92,0,.3);
+      padding: 9px 14px;
+      border-radius: 8px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: .88rem;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all var(--transition);
+      white-space: nowrap;
+    }
+
+    .btn-add:hover {
+      background: var(--orange);
+      color: #fff;
+      border-color: var(--orange);
+      transform: scale(1.04);
+    }
+
+    /* ── LOADING / EMPTY ─────────────── */
+    .loading-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .skeleton {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .skeleton-img {
+      height: 220px;
+      background: linear-gradient(90deg, #161b22 25%, #1f2937 50%, #161b22 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+    }
+
+    .skeleton-body { padding: 18px; }
+
+    .skeleton-line {
+      height: 12px;
+      background: linear-gradient(90deg, #161b22 25%, #1f2937 50%, #161b22 75%);
+      background-size: 200% 100%;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      animation: shimmer 1.4s infinite;
+    }
+
+    .skeleton-line.short { width: 60%; }
+    .skeleton-line.medium { width: 80%; }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+
+    .empty-state span { font-size: 3rem; display: block; margin-bottom: 12px; }
+    .empty-state p { font-size: .95rem; }
+
+    /* ── BANNER STRIP ────────────────── */
+    .promo-strip {
+      background: var(--orange);
+      padding: 14px 5vw;
+      display: flex;
+      gap: 40px;
+      overflow: hidden;
+    }
+
+    .strip-track {
+      display: flex;
+      gap: 40px;
+      animation: marquee 20s linear infinite;
+      white-space: nowrap;
+    }
+
+    .strip-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ── FOOTER ──────────────────────── */
+    footer {
+      background: var(--dark);
+      border-top: 1px solid var(--border);
+      padding: 64px 5vw 32px;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+
+    .footer-brand .logo-text { font-size: 1.8rem; margin-bottom: 14px; display: block; }
+
+    .footer-brand p {
+      color: var(--muted);
+      font-size: .9rem;
+      line-height: 1.7;
+      max-width: 280px;
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .social-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all var(--transition);
+    }
+
+    .social-btn:hover { border-color: var(--orange); color: var(--orange); }
+
+    .footer-col h4 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: .9rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 18px;
+    }
+
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+    .footer-col ul li a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .875rem;
+      transition: color var(--transition);
+    }
+
+    .footer-col ul li a:hover { color: var(--orange); }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .footer-bottom p { font-size: .8rem; color: var(--muted); }
+
+    .payment-icons { display: flex; gap: 8px; }
+
+    .pay-icon {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: .72rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    /* ── TOAST ───────────────────────── */
+    #toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 999;
+      background: var(--card-bg);
+      border: 1px solid var(--orange);
+      color: var(--white);
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: .9rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all .35s cubic-bezier(.4,0,.2,1);
+      pointer-events: none;
+    }
+
+    #toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ── ANIMATIONS ──────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ──────────────────── */
+    @media (max-width: 768px) {
+      nav { display: none; }
+      .hero-stats { position: static; margin-top: 48px; }
+      .hero { flex-direction: column; min-height: auto; padding-top: 80px; padding-bottom: 60px; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .footer-top { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 2.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+  <a href="#" class="logo">
+    <div class="logo-icon">⚡</div>
+    <span class="logo-text">POWER <span>SPORTS</span></span>
+  </a>
+  <nav>
+    <a href="#inicio">Início</a>
+    <a href="#categorias">Categorias</a>
+    <a href="#produtos">Produtos</a>
+    <a href="#footer">Contato</a>
+  </nav>
+  <div class="header-actions">
+    <button class="btn-cart" onclick="showToast('🛒 Carrinho ainda vazio!')">
+      🛒 Carrinho
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</header>
+
+<!-- ── PROMO STRIP ── -->
+<div class="promo-strip">
+  <div class="strip-track" id="stripTrack">
+    <span class="strip-item">⚡ Frete grátis acima de R$ 299</span>
+    <span class="strip-item">🏆 Produtos oficiais</span>
+    <span class="strip-item">💳 Até 12x sem juros</span>
+    <span class="strip-item">🔄 30 dias para devolução</span>
+    <span class="strip-item">⚡ Frete grátis acima de R$ 299</span>
+    <span class="strip-item">🏆 Produtos oficiais</span>
+    <span class="strip-item">💳 Até 12x sem juros</span>
+    <span class="strip-item">🔄 30 dias para devolução</span>
+  </div>
+</div>
+
+<!-- ── HERO ── -->
+<section id="inicio" class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">⚡ Nova coleção 2025</div>
+    <h1>
+      Eleve seu<br/>
+      <em>Desempenho</em>
+    </h1>
+    <p>Equipamentos e materiais esportivos de alto desempenho para atletas e entusiastas. Do treino à competição, temos tudo que você precisa.</p>
+    <div class="hero-ctas">
+      <a href="#produtos" class="btn-primary">Ver Produtos</a>
+      <a href="#categorias" class="btn-outline">Explorar</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">500+</div>
+      <div class="stat-label">Produtos</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">98%</div>
+      <div class="stat-label">Satisfação</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">10k+</div>
+      <div class="stat-label">Clientes</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CATEGORIAS ── -->
+<section id="categorias">
+  <div class="section-header">
+    <div>
+      <div class="section-label">Navegue por</div>
+      <h2 class="section-title">Categorias</h2>
+    </div>
+    <a href="#" class="view-all">Ver todas →</a>
+  </div>
+  <div class="categories-grid" id="categoriesGrid">
+    <!-- Skeletons -->
+    <div class="category-card" style="animation: fadeUp .4s ease both">
+      <div class="skeleton-line" style="height:40px;width:40px;border-radius:50%;margin:0 auto 12px"></div>
+      <div class="skeleton-line medium" style="margin:0 auto"></div>
+    </div>
+    <div class="category-card" style="animation: fadeUp .4s .1s ease both">
+      <div class="skeleton-line" style="height:40px;width:40px;border-radius:50%;margin:0 auto 12px"></div>
+      <div class="skeleton-line medium" style="margin:0 auto"></div>
+    </div>
+    <div class="category-card" style="animation: fadeUp .4s .2s ease both">
+      <div class="skeleton-line" style="height:40px;width:40px;border-radius:50%;margin:0 auto 12px"></div>
+      <div class="skeleton-line medium" style="margin:0 auto"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRODUTOS ── -->
+<section id="produtos">
+  <div class="section-header">
+    <div>
+      <div class="section-label">Seleção especial</div>
+      <h2 class="section-title">Produtos em Destaque</h2>
+    </div>
+    <a href="#" class="view-all">Ver todos →</a>
+  </div>
+  <div class="loading-grid" id="productsGrid">
+    <!-- Skeleton cards -->
+    <div class="skeleton" style="animation: fadeUp .4s ease both">
+      <div class="skeleton-img"></div>
+      <div class="skeleton-body">
+        <div class="skeleton-line short"></div>
+        <div class="skeleton-line medium"></div>
+        <div class="skeleton-line short" style="margin-top:16px"></div>
+      </div>
+    </div>
+    <div class="skeleton" style="animation: fadeUp .4s .1s ease both">
+      <div class="skeleton-img"></div>
+      <div class="skeleton-body">
+        <div class="skeleton-line short"></div>
+        <div class="skeleton-line medium"></div>
+        <div class="skeleton-line short" style="margin-top:16px"></div>
+      </div>
+    </div>
+    <div class="skeleton" style="animation: fadeUp .4s .2s ease both">
+      <div class="skeleton-img"></div>
+      <div class="skeleton-body">
+        <div class="skeleton-line short"></div>
+        <div class="skeleton-line medium"></div>
+        <div class="skeleton-line short" style="margin-top:16px"></div>
+      </div>
+    </div>
+    <div class="skeleton" style="animation: fadeUp .4s .3s ease both">
+      <div class="skeleton-img"></div>
+      <div class="skeleton-body">
+        <div class="skeleton-line short"></div>
+        <div class="skeleton-line medium"></div>
+        <div class="skeleton-line short" style="margin-top:16px"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer id="footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span class="logo-text">POWER <span>SPORTS</span></span>
+      <p>Sua loja especializada em materiais esportivos de alta performance. Equipamentos para todos os esportes e todos os níveis.</p>
+      <div class="footer-socials">
+        <button class="social-btn" title="Instagram">📸</button>
+        <button class="social-btn" title="Facebook">👍</button>
+        <button class="social-btn" title="YouTube">▶️</button>
+        <button class="social-btn" title="WhatsApp">💬</button>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Loja</h4>
+      <ul>
+        <li><a href="#">Todos os Produtos</a></li>
+        <li><a href="#">Novidades</a></li>
+        <li><a href="#">Promoções</a></li>
+        <li><a href="#">Marcas</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Suporte</h4>
+      <ul>
+        <li><a href="#">Central de Ajuda</a></li>
+        <li><a href="#">Rastrear Pedido</a></li>
+        <li><a href="#">Trocas e Devoluções</a></li>
+        <li><a href="#">Fale Conosco</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contato</h4>
+      <ul>
+        <li><a href="#">📧 contato@powersports.com.br</a></li>
+        <li><a href="#">📞 (11) 9999-9999</a></li>
+        <li><a href="#">📍 São Paulo, SP</a></li>
+        <li><a href="#">⏰ Seg–Sex 9h–18h</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Power Sports. Todos os direitos reservados.</p>
+    <div class="payment-icons">
+      <span class="pay-icon">Visa</span>
+      <span class="pay-icon">Master</span>
+      <span class="pay-icon">Pix</span>
+      <span class="pay-icon">Boleto</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ── TOAST ── -->
+<div id="toast">🛒 <span id="toastMsg"></span></div>
+
+<script>
+  // ── SUPABASE ──────────────────────────────────────────
+  const { createClient } = supabase;
+  const SUPABASE_URL = 'https://ayltxzpbtyevywwlvany.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF5bHR4enBidHlldnl3d2x2YW55Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyODE2MjEsImV4cCI6MjA5Mzg1NzYyMX0.ueqraftKxKI44sSRFAuSX7ZnQ0nHe5VYNgfW7_o0ndg';
+  const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // ── CART ──────────────────────────────────────────────
+  let cartCount = 0;
+
+  function addToCart(name) {
+    cartCount++;
+    document.getElementById('cartCount').textContent = cartCount;
+    showToast(`✅ "${name}" adicionado ao carrinho!`);
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    const m = document.getElementById('toastMsg');
+    m.textContent = msg.replace(/^[^ ]+ /, '');
+    t.innerHTML = msg.charAt(0) + msg.charAt(1) + ' <span id="toastMsg">' + msg.slice(3) + '</span>';
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // ── CATEGORY ICONS ───────────────────────────────────
+  const catIcons = {
+    default: '🏅',
+    futebol: '⚽', bola: '⚽',
+    corrida: '👟', atletismo: '🏃', tênis: '🎾', tennis: '🎾',
+    natação: '🏊', natacao: '🏊', piscina: '🏊',
+    ciclismo: '🚴', bike: '🚴', bicicleta: '🚴',
+    musculação: '🏋️', musculacao: '🏋️', academia: '🏋️', ginástica: '🏋️',
+    basquete: '🏀', basketball: '🏀',
+    vôlei: '🏐', volei: '🏐', volleyball: '🏐',
+    luta: '🥊', boxe: '🥊', mma: '🥋', judo: '🥋', karate: '🥋',
+    esportes: '🏆', esporte: '🏆',
+    camping: '⛺', outdoor: '🌲',
+    roupa: '👕', vestuário: '👕', vestuario: '👕',
+    calçado: '👟', calcado: '👟', sapato: '👟',
+    acessório: '🎽', acessorio: '🎽',
+  };
+
+  function getCatIcon(name = '') {
+    const key = name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    for (const [k, v] of Object.entries(catIcons)) {
+      if (key.includes(k)) return v;
+    }
+    return catIcons.default;
+  }
+
+  // ── RENDER CATEGORIES ─────────────────────────────────
+  function renderCategories(data) {
+    const grid = document.getElementById('categoriesGrid');
+    if (!data || data.length === 0) {
+      // fallback hardcoded categories if table is empty or missing
+      const fallback = [
+        { name: 'Futebol', count: null },
+        { name: 'Corrida', count: null },
+        { name: 'Musculação', count: null },
+        { name: 'Natação', count: null },
+        { name: 'Ciclismo', count: null },
+        { name: 'Basquete', count: null },
+      ];
+      grid.innerHTML = fallback.map(c => categoryCard(c.name, c.count)).join('');
+      return;
+    }
+    grid.innerHTML = data.map(c => {
+      const name = c.nome || c.name || c.categoria || c.title || 'Categoria';
+      const count = c.total || c.count || c.quantidade || null;
+      return categoryCard(name, count);
+    }).join('');
+  }
+
+  function categoryCard(name, count) {
+    return `
+      <div class="category-card" onclick="filterByCategory('${name}')">
+        <span class="cat-icon">${getCatIcon(name)}</span>
+        <div class="cat-name">${name}</div>
+        ${count !== null ? `<div class="cat-count">${count} produtos</div>` : ''}
+      </div>`;
+  }
+
+  function filterByCategory(name) {
+    showToast(`🔍 Filtrando: ${name}`);
+  }
+
+  // ── RENDER PRODUCTS ───────────────────────────────────
+  function formatPrice(val) {
+    const n = parseFloat(val);
+    if (isNaN(n)) return null;
+    return n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function getProductIcon(name = '', cat = '') {
+    return getCatIcon(name + ' ' + cat);
+  }
+
+  function renderProducts(data) {
+    const grid = document.getElementById('productsGrid');
+    grid.className = 'products-grid';
+
+    if (!data || data.length === 0) {
+      grid.innerHTML = `
+        <div class="empty-state" style="grid-column:1/-1">
+          <span>🏅</span>
+          <p>Nenhum produto cadastrado ainda.<br/>Adicione produtos no painel do Supabase.</p>
+        </div>`;
+      return;
+    }
+
+    grid.innerHTML = data.map((p, i) => {
+      const name   = p.nome || p.name || p.titulo || p.title || 'Produto';
+      const price  = p.preco || p.price || p.valor || null;
+      const imgUrl = p.imagem || p.image || p.foto || p.image_url || p.img || null;
+      const cat    = p.categoria || p.category || p.cat || '';
+      const badge  = p.destaque || p.featured ? '<div class="product-badge">Destaque</div>' : '';
+      const delay  = (i * 0.08).toFixed(2);
+      const priceStr = formatPrice(price);
+
+      const imgHtml = imgUrl
+        ? `<img src="${imgUrl}" alt="${name}" loading="lazy" onerror="this.parentElement.innerHTML=placeholderHtml('${getProductIcon(name, cat)}')">`
+        : `<div class="product-img-placeholder"><span>${getProductIcon(name, cat)}</span><p>${cat || 'Esportivo'}</p></div>`;
+
+      return `
+        <div class="product-card" style="animation-delay:${delay}s">
+          ${badge}
+          <div class="product-img-wrap">${imgHtml}</div>
+          <div class="product-body">
+            ${cat ? `<div class="product-category">${cat}</div>` : ''}
+            <div class="product-name">${name}</div>
+            <div class="product-footer">
+              <div class="product-price">
+                ${priceStr
+                  ? `<span class="currency">R$</span>${priceStr}`
+                  : '<span style="font-size:.9rem;color:var(--muted)">Consulte</span>'}
+              </div>
+              <button class="btn-add" onclick="addToCart('${name.replace(/'/g, "\\'")}')">+ Carrinho</button>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function placeholderHtml(icon) {
+    return `<div class="product-img-placeholder"><span>${icon}</span><p>Imagem indisponível</p></div>`;
+  }
+
+  // ── LOAD DATA ─────────────────────────────────────────
+  async function loadData() {
+    // Try multiple possible table names for categories
+    const catTables = ['categorias', 'categories', 'categoria', 'category'];
+    let categories = null;
+    for (const t of catTables) {
+      const { data, error } = await db.from(t).select('*').limit(12);
+      if (!error && data) { categories = data; break; }
+    }
+    renderCategories(categories);
+
+    // Try multiple possible table names for products
+    const prodTables = ['produtos', 'products', 'produto', 'product', 'itens', 'items'];
+    let products = null;
+    for (const t of prodTables) {
+      const { data, error } = await db.from(t).select('*').limit(20);
+      if (!error && data) { products = data; break; }
+    }
+    renderProducts(products);
+  }
+
+  // ── INIT ──────────────────────────────────────────────
+  loadData();
+</script>
+</body>
+</html>
